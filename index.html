@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10243a">
+<title>THERMEX | Heat Exchanger Design Studio</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brandmark">T</div><div><strong>THERMEX</strong><small>HEAT EXCHANGER DESIGN STUDIO</small></div></div>
+  <div class="topmeta"><span class="status-dot"></span> Local calculation mode <span class="version">V1.0 · Prototype</span></div>
+</header>
+<main class="shell">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">PROCESS ENGINEERING WORKSPACE</p>
+      <h1>Shell &amp; Tube<br><em>Design Calculator</em></h1>
+      <p class="sub">A transparent preliminary sizing and hydraulic screening tool. Edit the design basis and review live results.</p>
+    </div>
+    <div class="hero-stat"><span>CALCULATION BASIS</span><strong>SI units</strong><small>All inputs are editable</small></div>
+  </section>
+
+  <nav class="tabs" aria-label="Application sections">
+    <button class="tab active" data-tab="thermal">01 · Thermal</button>
+    <button class="tab" data-tab="geometry">02 · Geometry</button>
+    <button class="tab" data-tab="hydraulics">03 · Hydraulics</button>
+    <button class="tab" data-tab="drawings">04 · 2D / 3D drawings</button>
+    <button class="tab" data-tab="results">05 · Results &amp; checks</button>
+  </nav>
+
+  <section class="panel active" id="thermal">
+    <div class="section-head"><div><p class="eyebrow">DESIGN BASIS</p><h2>Thermal process inputs</h2></div><span class="step">01 / 04</span></div>
+    <div class="input-grid">
+      <label>Heat duty <span>kW</span><input id="duty" type="number" min="0.001" step="any" value="500"></label>
+      <label>Overall heat-transfer coefficient, U <span>W/m²·K</span><input id="u" type="number" min="0.001" step="any" value="500"></label>
+      <label>Hot fluid inlet temperature <span>°C</span><input id="thi" type="number" step="any" value="150"></label>
+      <label>Hot fluid outlet temperature <span>°C</span><input id="tho" type="number" step="any" value="90"></label>
+      <label>Cold fluid inlet temperature <span>°C</span><input id="tci" type="number" step="any" value="30"></label>
+      <label>Cold fluid outlet temperature <span>°C</span><input id="tco" type="number" step="any" value="70"></label>
+      <label>LMTD correction factor, Ft <span>dimensionless</span><input id="ft" type="number" min="0.01" max="1" step="any" value="0.95"></label>
+    </div>
+    <div class="note info"><b>Thermal model</b><span>Uses counter-current terminal temperature differences, LMTD, user-entered Ft and user-entered overall U. This is sizing, not an iterative rating calculation.</span></div>
+    <div class="actions"><button class="primary next" data-next="geometry">Continue to geometry <span>→</span></button></div>
+  </section>
+
+  <section class="panel" id="geometry">
+    <div class="section-head"><div><p class="eyebrow">MECHANICAL ARRANGEMENT INPUTS</p><h2>Tube bundle geometry</h2></div><span class="step">02 / 04</span></div>
+    <div class="input-grid">
+      <label>Tube outside diameter <span>mm</span><input id="do" type="number" min="0.1" step="any" value="19.05"></label>
+      <label>Tube inside diameter <span>mm</span><input id="di" type="number" min="0.1" step="any" value="16"></label>
+      <label>Tube length <span>m</span><input id="length" type="number" min="0.1" step="any" value="5"></label>
+      <label>Tube pitch <span>mm</span><input id="pitch" type="number" min="0.1" step="any" value="25"></label>
+      <label>Shell inside diameter <span>mm</span><input id="shell" type="number" min="1" step="any" value="600"></label>
+      <label>Baffle spacing <span>mm</span><input id="baffle" type="number" min="1" step="any" value="150"></label>
+      <label>Baffle cut <span>% of shell ID</span><input id="cut" type="number" min="1" max="49" step="any" value="25"></label>
+      <label>Tube passes <span>number</span><select id="passes"><option>1</option><option selected>2</option><option>4</option><option>6</option><option>8</option></select></label>
+      <label>Installed tube count <span>tubes</span><input id="nt" type="number" min="1" step="1" value="300"></label>
+    </div>
+    <div class="note warn"><b>Geometry limitation</b><span>Tube count capacity is only a rough packing estimate. No tube coordinates, pass-lane exclusion, tie rods, sealing strips, or TEMA bundle-clearance rules are generated.</span></div>
+    <div class="actions"><button class="secondary back" data-back="thermal">← Back</button><button class="primary next" data-next="hydraulics">Continue to hydraulics <span>→</span></button></div>
+  </section>
+
+  <section class="panel" id="hydraulics">
+    <div class="section-head"><div><p class="eyebrow">FLUID PROPERTY &amp; PRESSURE DROP BASIS</p><h2>Hydraulic inputs</h2></div><span class="step">03 / 04</span></div>
+    <h3 class="group-title">Tube-side fluid</h3>
+    <div class="input-grid">
+      <label>Mass flow rate <span>kg/s</span><input id="mt" type="number" min="0.001" step="any" value="20"></label>
+      <label>Density <span>kg/m³</span><input id="rhot" type="number" min="0.001" step="any" value="990"></label>
+      <label>Dynamic viscosity <span>Pa·s</span><input id="mut" type="number" min="0.000001" step="any" value="0.0007"></label>
+      <label>Absolute roughness <span>m</span><input id="rough" type="number" min="0" step="any" value="0.000045"></label>
+      <label>Return / fitting K per pass <span>dimensionless</span><input id="kt" type="number" min="0" step="any" value="2"></label>
+      <label>Allowable tube-side ΔP <span>bar</span><input id="allowt" type="number" min="0" step="any" value="0.7"></label>
+    </div>
+    <h3 class="group-title">Shell-side fluid</h3>
+    <div class="input-grid">
+      <label>Mass flow rate <span>kg/s</span><input id="ms" type="number" min="0.001" step="any" value="25"></label>
+      <label>Density <span>kg/m³</span><input id="rhos" type="number" min="0.001" step="any" value="850"></label>
+      <label>Dynamic viscosity <span>Pa·s</span><input id="mus" type="number" min="0.000001" step="any" value="0.003"></label>
+      <label>Allowable shell-side ΔP <span>bar</span><input id="allows" type="number" min="0" step="any" value="0.7"></label>
+    </div>
+    <div class="note info"><b>Hydraulic model</b><span>Tube side uses Darcy–Weisbach with laminar / Swamee–Jain friction factor and a user-entered fitting K. Shell side uses a simplified Kern-style crossflow estimate; it is not Bell–Delaware.</span></div>
+    <div class="actions"><button class="secondary back" data-back="geometry">← Back</button><button class="primary next" data-next="results">Calculate results <span>→</span></button></div>
+  </section>
+
+  <section class="panel" id="drawings">
+<div class="section-head"><div><p class="eyebrow">DESIGN VISUALIZATION</p><h2>Exchanger arrangement drawings</h2></div><span class="step">04 / 05</span></div>
+<div class="drawing-toolbar"><div class="view-switch"><button class="view-btn active" data-view="longitudinal">2D longitudinal</button><button class="view-btn" data-view="end">2D end view</button><button class="view-btn" data-view="iso">3D isometric</button></div><button class="secondary" id="downloadSvg">Export drawing SVG ↓</button></div>
+<div class="drawing-title"><strong id="drawingName">Shell-and-tube exchanger · longitudinal section</strong><span>Parametric concept · not to scale</span></div>
+<div class="drawing-canvas" id="drawingCanvas"></div>
+<div class="drawing-legend"><span><i class="legend-shell"></i> Shell / channel</span><span><i class="legend-tube"></i> Tube bundle</span><span><i class="legend-baffle"></i> Baffles</span><span><i class="legend-flow"></i> Flow direction</span></div>
+<div class="drawing-data" id="drawingData"></div>
+<div class="note warn"><b>Drawing status</b><span>Conceptual layout only. Tube positions are representative, not a drilling map or fabrication drawing. No tubesheet, pass-partition, nozzle reinforcement, weld, support, lifting, or code dimensions are established.</span></div>
+<div class="actions"><button class="secondary back" data-back="hydraulics">← Back to inputs</button><button class="primary next" data-next="results">View calculation results →</button></div>
+</section>
+<section class="panel" id="results">
+    <div class="section-head"><div><p class="eyebrow">LIVE ENGINEERING OUTPUT</p><h2>Results &amp; design checks</h2></div><span class="step">05 / 05</span></div>
+    <div id="alerts" class="alerts" aria-live="polite"></div>
+    <div class="metric-grid">
+      <article class="metric"><span>Required area</span><strong id="area">—</strong><small>m²</small></article>
+      <article class="metric"><span>Required tube count</span><strong id="reqtubes">—</strong><small>tubes</small></article>
+      <article class="metric"><span>Installed area</span><strong id="instarea">—</strong><small>m²</small></article>
+      <article class="metric"><span>Counter-current LMTD</span><strong id="lmtd">—</strong><small>°C</small></article>
+    </div>
+    <div class="result-columns">
+      <article class="result-card"><h3>Thermal results</h3><div id="thermalRows" class="result-rows"></div></article>
+      <article class="result-card"><h3>Tube-side hydraulics</h3><div id="tubeRows" class="result-rows"></div></article>
+      <article class="result-card"><h3>Shell-side screening</h3><div id="shellRows" class="result-rows"></div></article>
+    </div>
+    <div class="result-card checks"><h3>Preliminary checks</h3><div id="checkRows" class="check-rows"></div></div>
+    <div class="note danger"><b>Engineering disclaimer</b><span>For preliminary learning and screening only. Do not use these outputs for procurement, fabrication, safety decisions, or final equipment guarantees. A qualified engineer must complete a validated thermal rating, mechanical design, vibration assessment, and applicable code review.</span></div>
+    <div class="actions"><button class="secondary back" data-back="hydraulics">← Edit inputs</button><button class="secondary" id="print">Print / Save PDF</button><button class="primary" id="csv">Export results CSV ↓</button></div>
+  </section>
+
+  <footer><span>THERMEX · Heat Exchanger Design Studio</span><span>V1.0 · Preliminary engineering prototype</span></footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
